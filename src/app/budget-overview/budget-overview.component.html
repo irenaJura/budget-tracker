@@ -1,0 +1,11 @@
+<div>
+  <h2>Budget Overview</h2>
+  <ul>
+    @for (entry of entries; track entry.id) {
+    <li>
+      Description: {{ entry.description }}, Amount: ${{ entry.amount }}
+    </li>
+    }
+  </ul>
+  <p>{{ status }}</p>
+</div>

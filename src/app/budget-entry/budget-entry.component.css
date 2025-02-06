@@ -1,0 +1,5 @@
+:host {
+  display: inline-block;
+  width: calc(33% - 20px);
+  margin: 0 10px;
+}
