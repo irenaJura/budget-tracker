@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BudgetEntry } from '../budget-entry.interface';
 
@@ -8,11 +8,13 @@ import { BudgetEntry } from '../budget-entry.interface';
   imports: [FormsModule],
   templateUrl: './budget-entry-editor.component.html',
 })
-export class BudgetEntryEditorComponent {
+export class BudgetEntryEditorComponent implements OnInit {
   @Input() entry: BudgetEntry = { id: 0, description: '', amount: 0 };
   status = '';
 
-  // todo: add ngOnInit
+  ngOnInit() {
+    this.status = 'Budget Entry Editor Initialized';
+  }
 
   resetEntry() {
     this.entry.description = '';

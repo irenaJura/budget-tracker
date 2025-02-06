@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BudgetEntry } from '../budget-entry.interface';
 
 @Component({
@@ -7,9 +7,11 @@ import { BudgetEntry } from '../budget-entry.interface';
   imports: [],
   templateUrl: './budget-overview.component.html',
 })
-export class BudgetOverviewComponent {
+export class BudgetOverviewComponent implements OnInit {
   @Input() entries: BudgetEntry[] = [];
   status = '';
 
-  // todo: define ngOnInit
+  ngOnInit() {
+    this.status = 'Budget Overview Loaded';
+  }
 }
