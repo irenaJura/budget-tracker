@@ -4,7 +4,7 @@ import { BudgetEntry } from './budget-entry.interface';
 import { BudgetEntryEditorComponent } from './budget-entry-editor/budget-entry-editor.component';
 import { BudgetEntryComponent } from './budget-entry/budget-entry.component';
 import { BudgetOverviewComponent } from './budget-overview/budget-overview.component';
-import { delay, from, Observable, Subscription } from 'rxjs';
+import { delay, from, Observable, of, Subscription } from 'rxjs';
 
 const budgetEntriesData: BudgetEntry[] = [
   { id: 1, description: 'Groceries', amount: 250 },
@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
   status = 'Fetching Data.';
   budgetEntries: BudgetEntry[] = [];
   budgetSubscription!: Subscription;
+  deleteSubscriptions: Subscription[] = [];
 
   ngOnInit() {
     this.budgetSubscription = this.simulateDataRetrieval().subscribe((data) => {
@@ -35,14 +36,24 @@ export class AppComponent implements OnInit {
   }
 
   deleteEntry(entryId: number) {
-    // todo: define body to delete entry
+    const deleteSub = this.simulateDeleteEntry(entryId).subscribe({
+      next: (data) => {
+        this.budgetEntries = data;
+        this.status = 'Entry deleted.';
+      },
+      error: (err) => {
+        this.status = 'Error deleting entry.';
+      },
+    });
+    this.deleteSubscriptions.push(deleteSub);
   }
-  simulateDeleteEntry(entryId: number) {
+
+  simulateDeleteEntry(entryId: number): Observable<BudgetEntry[]> {
     // Simulating async operation using RxJS
     const updatedEntries = this.budgetEntries.filter(
       (entry) => entry.id !== entryId
     );
-    // todo: return observable
+    return of(updatedEntries);
   }
 
   simulateDataRetrieval(): Observable<BudgetEntry> {
@@ -51,5 +62,7 @@ export class AppComponent implements OnInit {
 
   ngOnDestroy() {
     if (this.budgetSubscription) this.budgetSubscription.unsubscribe();
+
+    this.deleteSubscriptions.forEach((sub) => sub.unsubscribe());
   }
 }
