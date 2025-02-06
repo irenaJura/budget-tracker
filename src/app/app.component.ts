@@ -4,7 +4,7 @@ import { BudgetEntry } from './budget-entry.interface';
 import { BudgetEntryEditorComponent } from './budget-entry-editor/budget-entry-editor.component';
 import { BudgetEntryComponent } from './budget-entry/budget-entry.component';
 import { BudgetOverviewComponent } from './budget-overview/budget-overview.component';
-import { delay, from, Observable } from 'rxjs';
+import { delay, from, Observable, Subscription } from 'rxjs';
 
 const budgetEntriesData: BudgetEntry[] = [
   { id: 1, description: 'Groceries', amount: 250 },
@@ -25,10 +25,10 @@ const budgetEntriesData: BudgetEntry[] = [
 export class AppComponent implements OnInit {
   status = 'Fetching Data.';
   budgetEntries: BudgetEntry[] = [];
-  // todo: define subscription
+  budgetSubscription!: Subscription;
 
   ngOnInit() {
-    this.simulateDataRetrieval().subscribe((data) => {
+    this.budgetSubscription = this.simulateDataRetrieval().subscribe((data) => {
       this.budgetEntries.push(data);
       this.status = 'Application Loaded';
     });
@@ -49,5 +49,7 @@ export class AppComponent implements OnInit {
     return from(budgetEntriesData).pipe(delay(2000));
   }
 
-  // todo: define ngOnDestroy to unsubscribe
+  ngOnDestroy() {
+    if (this.budgetSubscription) this.budgetSubscription.unsubscribe();
+  }
 }
