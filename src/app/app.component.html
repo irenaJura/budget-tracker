@@ -6,8 +6,7 @@
   }
   @for (entry of budgetEntries; track entry.id) {
   <app-budget-entry [entry]="entry" (deleteEntry)="deleteEntry($event)">
-    <!-- todo: add the #extraButton -->
-    <button>Extra Action</button>
+    <button #extraButton>Extra Action</button>
   </app-budget-entry>
   }
 </div>
