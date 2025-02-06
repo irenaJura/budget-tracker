@@ -1,4 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+} from '@angular/core';
 import { BudgetEntry } from '../budget-entry.interface';
 import { BudgetEntryEditorComponent } from '../budget-entry-editor/budget-entry-editor.component';
 
@@ -13,11 +19,13 @@ export class BudgetEntryComponent {
   @Input() entry: BudgetEntry = { id: 0, description: '', amount: 0 };
   @Output() deleteEntry = new EventEmitter<number>();
   status = '';
-  // todo: define viewchild
+  @ViewChild(BudgetEntryEditorComponent)
+  budgetEntryEditor!: BudgetEntryEditorComponent;
   // todo: define content child
 
   resetEditor() {
-    // todo: define reset of entry editor
+    this.budgetEntryEditor.resetEntry();
+    this.budgetEntryEditor.status = 'Entry reset to default.';
   }
 
   delete() {
